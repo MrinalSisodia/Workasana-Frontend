@@ -26,11 +26,13 @@ export const TaskProvider = ({ children }) => {
     }
   }, [user?._id]);
 
-  useEffect(() => {
-    if (user && tasks.length === 0 && !loading) {
-      fetchTasks();
-    }
-  }, [user, tasks.length, loading, fetchTasks]);
+ useEffect(() => {
+   if (user?._id) {
+     fetchTasks();
+   } else {
+     setFilteredTasks([]);
+   }
+ }, [user?._id, fetchTasks]);
 
   return (
     <TaskContext.Provider

@@ -30,11 +30,6 @@ const DashboardPage = () => {
     }
   }, [tasks, statusFilter]);
 
-  useEffect(() => {
-  if (!authLoading && user && tasks.length === 0 && !tasksLoading) {
-    fetchTasks();
-  }
-}, [authLoading, user, tasks.length, tasksLoading, fetchTasks]);
 
   return (
     <div className="d-flex min-vh-100 w-100 bg-light">
