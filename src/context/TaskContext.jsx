@@ -30,7 +30,7 @@ export const TaskProvider = ({ children }) => {
    if (user?._id) {
      fetchTasks();
    } else {
-     setFilteredTasks([]);
+     setTasks([]);
    }
  }, [user?._id, fetchTasks]);
 
