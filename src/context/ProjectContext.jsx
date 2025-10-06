@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const ProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
