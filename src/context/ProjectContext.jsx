@@ -1,5 +1,5 @@
 // src/context/ProjectContext.jsx
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import api from "../utils/api";
 import { useAuth } from "./AuthContext";
 import { toast } from "react-toastify";
@@ -7,27 +7,32 @@ import { toast } from "react-toastify";
 const ProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
-  const { token } = useAuth();
+  const { user } = useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch projects on mount
-  useEffect(() => {
-    if (token) fetchProjects();
-  }, [token]);
+ useEffect(() => {
+  if (user?._id) {
+    fetchProjects();
+  } else {
+    setProjects([]);
+  }
+}, [user?._id]);
 
-  const fetchProjects = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get(
-        "https://workasana-backend-liard.vercel.app/api/projects");
-      setProjects(res.data);
-    } catch (err) {
-      console.error("Failed to fetch projects:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchProjects =  useCallback(async () => {
+  if (!user?._id) return;
+  try {
+    setLoading(true);
+    const res = await api.get("/projects");
+    setProjects(res.data);
+  } catch (err) {
+    console.error("Failed to fetch projects:", err);
+    toast.error("Failed to load projects");
+  } finally {
+    setLoading(false);
+  }
+}, [user?._id]);
+
 
   const fetchProjectByID = async(projectId) => {
     try {

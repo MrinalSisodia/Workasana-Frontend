@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import api from "../utils/api";
 import { toast } from "react-toastify";
 import { useAuth } from "./AuthContext";
@@ -6,30 +6,35 @@ import { useAuth } from "./AuthContext";
 const TeamContext = createContext();
 
 export const TeamProvider = ({ children }) => {
-  const { token } = useAuth();
+  const { user } = useAuth();
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [loading, setLoading] = useState(true);
 
 
-  const fetchTeams = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get(
-        "https://workasana-backend-liard.vercel.app/api/teams"
-      );
-      setTeams(res.data);
-    } catch (err) {
-      console.error("Failed to fetch teams:", err);
-      toast.error("Failed to load teams");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const fetchTeams = useCallback(async () => {
+  if (!user?._id) return; 
+  try {
+    setLoading(true);
+    const res = await api.get("/teams");
+    setTeams(res.data);
+  } catch (err) {
+    console.error("Failed to fetch teams:", err);
+    toast.error("Failed to load teams");
+  } finally {
+    setLoading(false);
+  }
+}, [user?._id]);
+
+
 
   useEffect(() => {
-    if (token) fetchTeams();
-  }, [token]);
+  if (user?._id) {
+    fetchTeams();
+  } else {
+    setTeams([]);
+  }
+}, [user?._id]);
 
 
  const createTeam = async (teamData) => {
