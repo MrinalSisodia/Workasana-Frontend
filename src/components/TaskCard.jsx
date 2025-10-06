@@ -13,7 +13,7 @@ const TaskCard = ({ task }) => {
         <span className="badge bg-warning text-dark mb-2">{task.status}</span>
         <h5 className="card-title">{task.name}</h5>
         <div className="d-flex gap-1 flex-wrap">
-          {task.owners.slice(0, 5).map((o) => (
+          {task?.owners?.slice(0, 5).map((o) => (
             <Avatar
               key={o._id}
               name={o.name}
@@ -22,7 +22,7 @@ const TaskCard = ({ task }) => {
               textSizeRatio={2}
             />
           ))}
-          {task.owners.length > 5 && (
+          {task?.owners?.length > 5 && (
             <div className="d-flex align-items-center justify-content-center rounded-circle bg-secondary text-white" style={{ width: "32px", height: "32px", fontSize: "0.75rem" }}>
               +{task.owners.length - 5}
             </div>

@@ -26,6 +26,69 @@ export const TaskProvider = ({ children }) => {
     }
   }, [user?._id]);
 
+  const createTask = async (taskData) => {
+  try {
+    const res = await api.post("/tasks", taskData);
+
+    const newTask = res.data.task;
+
+    setTasks((prev) => [...prev, newTask]);
+
+    toast.success("Task created successfully");
+
+    return newTask;
+  } catch (err) {
+    console.error("Error creating task:", err);
+    toast.error("Failed to create task");
+    throw err; // rethrow so modal can handle it
+  }
+};
+
+   const updateTask = async (taskId, updatedData) => {
+    setLoading(true);
+    try {
+      await api.put(`/tasks/${taskId}`, updatedData);
+
+      const res = await api.get(`/tasks/${taskId}`);
+      setTasks((prev) =>
+        prev.map((t) => (t._id === taskId ? res.data : t))
+      );
+
+      if (selectedTask?._id === taskId) setSelectedTask(res.data);
+
+      toast.success("Task updated successfully");
+      return res.data;
+    } catch (err) {
+      console.error("Error updating task:", err);
+      toast.error("Failed to update task");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteTask = async (id) => {
+  const prevTasks = [...tasks]; // backup for rollback
+  try {
+    // Optimistically remove team from state
+    setTasks(prev => prev.filter(t => t._id !== id));
+    if (selectedTask?._id === id) setSelectedTask(null);
+
+    // Call API
+  
+    await api.delete(`/tasks/${id}`);
+
+    toast.success("Task deleted!");
+  } catch (err) {
+    // Rollback if API fails
+    setTeams(prevTeams);
+    console.error("Error deleting task:", err);
+    toast.error("Failed to delete task. Please try again.");
+  }
+};
+
+
+
  useEffect(() => {
    if (user?._id) {
      fetchTasks();
@@ -36,7 +99,7 @@ export const TaskProvider = ({ children }) => {
 
   return (
     <TaskContext.Provider
-      value={{ tasks, selectedTask, loading, fetchTasks, setSelectedTask }}
+      value={{ tasks, selectedTask, loading, fetchTasks, setSelectedTask, createTask, updateTask, deleteTask }}
     >
       {children}
     </TaskContext.Provider>
