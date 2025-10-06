@@ -14,7 +14,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="bg-light border-end p-4" style={{ width: "250px", flexShrink: 0 }}>
+    <aside className="bg-light border-end p-4" style={{ width: "200px", flexShrink: 0 }}>
       <h2 className="fw-bold text-primary mb-5">workasana</h2>
       <nav className="nav flex-column gap-3">
         <Link
