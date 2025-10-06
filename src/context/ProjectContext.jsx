@@ -7,13 +7,15 @@ import { toast } from "react-toastify";
 const ProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
-  const { user } = useAuth();
+  const { token } = useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
  useEffect(() => {
-  fetchProjects();
-}, []);
+  if (token) {
+    fetchProjects();
+  }
+}, [token]);
 
   const fetchProjects =  useCallback(async () => {
   if (!user?._id) return;

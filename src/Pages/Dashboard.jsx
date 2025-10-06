@@ -59,7 +59,7 @@ const DashboardPage = () => {
             <p>No projects found</p>
           ) : (
             <div className="row g-4">
-              {projects.map((p) => (
+              {projects?.map((p) => (
                 <div key={p._id} className="col-lg-3 col-md-4 col-sm-6">
                   <div className="card shadow-sm border-0 h-100"
                     style={{ cursor: "pointer" }}
