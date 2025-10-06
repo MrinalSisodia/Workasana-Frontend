@@ -12,12 +12,8 @@ export const ProjectProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
  useEffect(() => {
-  if (user?._id) {
-    fetchProjects();
-  } else {
-    setProjects([]);
-  }
-}, [user?._id]);
+  fetchProjects();
+}, []);
 
   const fetchProjects =  useCallback(async () => {
   if (!user?._id) return;
