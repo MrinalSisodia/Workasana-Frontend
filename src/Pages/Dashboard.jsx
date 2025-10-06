@@ -36,13 +36,13 @@ const DashboardPage = () => {
       <Sidebar />
 
       <main className="flex-grow-1 p-5">
-        {/* Search Bar */}
+        {/* Search Bar 
         <div className="input-group mb-3">
           <input type="text" className="form-control" placeholder="Search..." />
           <button className="btn btn-outline-secondary" type="button">
             <i className="bi bi-search"></i>
           </button>
-        </div>
+        </div> */}
 
         {/* Projects Section */}
         <section className="my-5">
