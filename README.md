@@ -1,4 +1,4 @@
-# Lead Management CRM
+# Task Management Tool
 
 A full-stack task management app with user authentication to manage tasks, teams & projects.  
 Built with a React frontend, JWT for authentication, Express/Node backend & MongoDB database.
